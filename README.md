@@ -22,4 +22,13 @@ Efficient widget to output all today's birthdays of community members.
 
 ## How does it work?
 
+1. At start, job will be triggered to check all users that have birthday today. It's an async process. By design it will take some time.
+2. Every day at midnight (Server Time), job to find today's birthdays is fired
+3. Widget returns birthdays that are stored in memory, It's fast and efficient.
+
+Optimisations:
+
+- to store today's birthdays in memory
+- to check for birthdays only once per day
+
 ## TODO
