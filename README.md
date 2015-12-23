@@ -32,3 +32,6 @@ Optimisations:
 - to check for birthdays only once per day
 
 ## TODO
+
+- ACP: Provide setting to setup timezone
+- ACP: Provide setting to setup time to check for birthdays
