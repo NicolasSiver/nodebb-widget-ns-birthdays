@@ -22,5 +22,9 @@
   "bugs": {
     "url": "https://github.com/NicolasSiver/nodebb-widget-ns-birthdays/issues"
   },
-  "homepage": "https://github.com/NicolasSiver/nodebb-widget-ns-birthdays#readme"
+  "homepage": "https://github.com/NicolasSiver/nodebb-widget-ns-birthdays#readme",
+  "dependencies": {
+    "cron": "^1.1.0",
+    "moment": "^2.10.6"
+  }
 }
