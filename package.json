@@ -1,0 +1,26 @@
+{
+  "name": "nodebb-widget-ns-birthdays",
+  "version": "1.0.0",
+  "description": "Efficient widget to output all today's birthdays of community members.",
+  "main": "./widget/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NicolasSiver/nodebb-widget-ns-birthdays.git"
+  },
+  "keywords": [
+    "widget",
+    "birthday",
+    "gifts",
+    "attention",
+    "community"
+  ],
+  "author": "Nicolas Siver",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NicolasSiver/nodebb-widget-ns-birthdays/issues"
+  },
+  "homepage": "https://github.com/NicolasSiver/nodebb-widget-ns-birthdays#readme"
+}
