@@ -1,0 +1,24 @@
+{
+  "id": "nodebb-widget-ns-birthdays",
+  "name": "NodeBB Birthdays Widget",
+  "description": "Efficient widget to output all today's birthdays of community members.",
+  "url": "https://github.com/NicolasSiver/nodebb-widget-ns-birthdays",
+  "library": "./widget/index.js",
+  "hooks": [
+    {
+      "hook": "static:app.load",
+      "method": "hooks.statics.load"
+    },
+    {
+      "hook": "filter:widgets.getWidgets",
+      "method": "hooks.filters.getWidgets"
+    },
+    {
+      "hook": "filter:widget.render:ns:birthdays",
+      "method": "hooks.filters.renderWidget"
+    }
+  ],
+  "templates": "./public/templates",
+  "css": [],
+  "compatibility": "^0.7.0 || ^0.8.0 || ^0.9.0"
+}
