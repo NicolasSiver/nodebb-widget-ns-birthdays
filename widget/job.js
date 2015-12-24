@@ -4,10 +4,9 @@
 
     var logger = require('./logger'),
         nodebb = require('./nodebb'),
-        db     = nodebb.db,
-        user   = nodebb.user;
+        db     = nodebb.db;
 
-    var checking   = false,
+    var checking   = true,
         users      = null,
         checkStart = null,
         checkEnd   = null;
