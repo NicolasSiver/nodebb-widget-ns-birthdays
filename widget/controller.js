@@ -1,19 +1,48 @@
 (function (Controller) {
 
-    var CronJob = require('cron').CronJob;
+    var async   = require('async'),
+        CronJob = require('cron').CronJob,
+        fs      = require('fs'),
+        path    = require('path');
 
-    var job    = require('./job'),
-        logger = require('./logger');
+    var job       = require('./job'),
+        logger    = require('./logger'),
+        Templates = require('./templates');
 
-    var cronJob = null;
+    var cronJob   = null,
+        templates = null;
 
     Controller.disposeJobs = function (done) {
-        if(cronJob !== null){
+        if (cronJob !== null) {
             logger.log('warn', 'Cron Job is disposed');
             cronJob.stop();
             cronJob = null;
         }
         done(null);
+    };
+
+    Controller.loadTemplates = function (done) {
+        if (templates !== null) {
+            logger.log('warn', 'Templates are already loaded');
+            return done(null);
+        }
+
+        templates = {};
+        templates[Templates.SETTINGS] = {uri: 'widgets/birthdays/settings.tpl', data: undefined};
+        templates[Templates.VIEW] = {uri: 'widgets/birthdays/view.tpl', data: undefined};
+
+        async.each(Object.keys(templates), function (name, next) {
+            var template = templates[name];
+            fs.readFile(path.resolve(__dirname, '../public/templates', template.uri), function (error, content) {
+                if (error) {
+                    logger.log('error', 'Template Error has occurred, message: %s', error.message);
+                    return next(error);
+                }
+                template.data = content.toString();
+                logger.log('verbose', 'Widget Template %s is loaded', name);
+                next(null);
+            });
+        }, done);
     };
 
     Controller.setupCron = function (done) {

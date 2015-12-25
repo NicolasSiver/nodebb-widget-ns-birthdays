@@ -21,6 +21,7 @@
         statics: {
             load: function (params, callback) {
                 async.series([
+                    async.apply(controller.loadTemplates),
                     function initialJob(next) {
                         // Postpone initial Job,
                         // we already have to much stuff to do at forum's boot stage
