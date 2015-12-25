@@ -28,7 +28,7 @@
             async.apply(db.getObjectField, 'global', 'userCount'),
             function (usersCount, callback) {
                 var birthdays      = [],
-                    today          = new Date('1/29/2016'),
+                    today          = new Date(),
                     userBundleSize = 100,
                     index          = 0,
                     sortBy         = 'users:joindate';
