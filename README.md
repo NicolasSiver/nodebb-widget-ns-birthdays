@@ -13,12 +13,25 @@ Efficient widget to output all today's birthdays of community members.
  
 
 - [Customization](#customization)
+- [Look](#look)
 - [How does it work?](#how-does-it-work)
 - [TODO](#todo)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Customization
+
+You could change styles for these classes:
+
+- `.birthdays .birthday-item`, responsible for line in the list
+- `.birthdays .birthday-name`, responsible for the user's name
+- `.birthdays .birthday-age`, responsible for the user's age (Also age could be disabled in widget settings)
+
+If you want change icon style, refer to `.fa` class.
+
+## Look
+
+![Widget Preview](screenshot.png)
 
 ## How does it work?
 
