@@ -16,7 +16,9 @@
                     }
                     callback(null, data);
                 });
-            }
+            },
+
+            getWidgets: controller.getWidgets
         },
         statics: {
             load: function (params, callback) {

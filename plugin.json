@@ -18,7 +18,7 @@
       "method": "hooks.filters.getWidgets"
     },
     {
-      "hook": "filter:widget.render:ns:birthdays",
+      "hook": "filter:widget.render:ns_birthdays",
       "method": "hooks.filters.renderWidget"
     }
   ],

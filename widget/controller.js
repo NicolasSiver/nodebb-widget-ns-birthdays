@@ -21,6 +21,17 @@
         done(null);
     };
 
+    Controller.getWidgets = function (widgets, done) {
+        widgets.push({
+            name       : 'Birthdays',
+            widget     : 'ns_birthdays',
+            description: "Efficient widget to output all today's birthdays of community members.",
+            content    : templates[Templates.SETTINGS].data
+        });
+
+        done(null, widgets);
+    };
+
     Controller.loadTemplates = function (done) {
         if (templates !== null) {
             logger.log('warn', 'Templates are already loaded');
@@ -39,7 +50,7 @@
                     return next(error);
                 }
                 template.data = content.toString();
-                logger.log('verbose', 'Widget Template %s is loaded', name);
+                logger.log('verbose', 'Widget Template "%s" is loaded', name);
                 next(null);
             });
         }, done);
