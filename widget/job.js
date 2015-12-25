@@ -6,7 +6,7 @@
         nodebb = require('./nodebb'),
         db     = nodebb.db;
 
-    var checking   = true,
+    var checking   = false,
         users      = null,
         checkStart = null,
         checkEnd   = null;

@@ -10,6 +10,10 @@
       "method": "hooks.statics.load"
     },
     {
+      "hook": "filter:plugins.clearRequireCache",
+      "method": "hooks.filters.clearRequireCache"
+    },
+    {
       "hook": "filter:widgets.getWidgets",
       "method": "hooks.filters.getWidgets"
     },

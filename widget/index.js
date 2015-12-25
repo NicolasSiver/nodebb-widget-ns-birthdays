@@ -3,10 +3,21 @@
 
     var async = require('async');
 
-    var job    = require('./job'),
-        logger = require('./logger');
+    var controller = require('./controller'),
+        job        = require('./job'),
+        logger     = require('./logger');
 
     Widget.hooks = {
+        filters: {
+            clearRequireCache: function (data, callback) {
+                controller.disposeJobs(function (error) {
+                    if (error) {
+                        return callback(error);
+                    }
+                    callback(null, data);
+                });
+            }
+        },
         statics: {
             load: function (params, callback) {
                 async.series([
@@ -22,7 +33,8 @@
                             });
                         }, 500 + Math.random() * 2500);
                         next(null);
-                    }
+                    },
+                    async.apply(controller.setupCron)
                 ], function (error) {
                     if (error) {
                         return callback(error);
