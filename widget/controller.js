@@ -3,13 +3,18 @@
     var async   = require('async'),
         CronJob = require('cron').CronJob,
         fs      = require('fs'),
+        moment  = require('moment'),
         path    = require('path');
 
-    var job       = require('./job'),
-        logger    = require('./logger'),
-        Templates = require('./templates');
+    var job         = require('./job'),
+        logger      = require('./logger'),
+        nodebb      = require('./nodebb'),
+        nconf       = nodebb.nconf,
+        templatesJs = nodebb.templates,
+        Templates   = require('./templates');
 
-    var cronJob   = null,
+    var app       = null,
+        cronJob   = null,
         templates = null;
 
     Controller.disposeJobs = function (done) {
@@ -54,6 +59,50 @@
                 next(null);
             });
         }, done);
+    };
+
+    Controller.renderWidget = function (widget, done) {
+        var showAge = widget.data.showAge;
+
+        async.waterfall([
+            async.apply(job.getUsers),
+            function format(users, next) {
+                users = users || [];
+                next(null, users.map(function (userData) {
+                    return {
+                        name    : userData.username,
+                        birthday: userData.birthday,
+                        userslug: userData.userslug
+                    };
+                }));
+            },
+            function findAge(users, next) {
+                if (!showAge) {
+                    next(null, {users: users});
+                } else {
+                    var today = new Date();
+                    next(null, {
+                        users: users.map(function (userData) {
+                            userData.age = moment(today).diff(new Date(userData.birthday), 'years');
+                            return userData;
+                        })
+                    });
+                }
+            },
+            function render(data, next) {
+                data.relative_path = nconf.get('relative_path');
+                next(null, templatesJs.parse(templates[Templates.VIEW].data, data));
+            }
+        ], done);
+    };
+
+    Controller.setParams = function (params, done) {
+        var router      = params.router,
+            middleware  = params.middleware,
+            controllers = params.controllers;
+
+        app = params.app;
+        done(null);
     };
 
     Controller.setupCron = function (done) {

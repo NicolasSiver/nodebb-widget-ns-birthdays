@@ -18,11 +18,14 @@
                 });
             },
 
-            getWidgets: controller.getWidgets
+            getWidgets: controller.getWidgets,
+
+            renderWidget: controller.renderWidget
         },
         statics: {
             load: function (params, callback) {
                 async.series([
+                    async.apply(controller.setParams, params),
                     async.apply(controller.loadTemplates),
                     function initialJob(next) {
                         // Postpone initial Job,

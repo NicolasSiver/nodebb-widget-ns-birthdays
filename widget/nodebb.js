@@ -37,8 +37,9 @@
          * theme_config: '/path/to/NodeBB/node_modules/nodebb-theme-lavender/theme.json',
          * NODE_ENV: 'development'
          */
-        nconf   : NodeBB.require('nconf'),
-        passport: NodeBB.require('passport'),
-        express : NodeBB.require('express')
+        nconf    : NodeBB.require('nconf'),
+        passport : NodeBB.require('passport'),
+        express  : NodeBB.require('express'),
+        templates: NodeBB.require('templates.js')
     };
 })(module, require.main);
