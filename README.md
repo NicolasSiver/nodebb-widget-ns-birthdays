@@ -49,7 +49,8 @@ Optimisations:
 - ACP: Provide setting to setup timezone
 - ACP: Provide setting to setup time to check for birthdays
 - ACP: Ability to setup presentation
-- ACP: limit number of birthdays
+- ACP: Limit number of birthdays
 - ACP: Default message when there are no birthdays
+- ACP: list birthdays as comma separated list
 - Calculate middle age
 - Update in real time
