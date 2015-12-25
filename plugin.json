@@ -23,5 +23,8 @@
     }
   ],
   "templates": "./public/templates",
-  "css": []
+  "css": [],
+  "less": [
+    "style/widget.less"
+  ]
 }
