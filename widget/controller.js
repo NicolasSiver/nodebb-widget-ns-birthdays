@@ -112,8 +112,8 @@
         }
 
         // Runs every day
-        // at 00:08 AM
-        cronJob = new CronJob('00 8 0 * * *', function () {
+        // at 00:10 AM
+        cronJob = new CronJob('00 10 0 * * *', function () {
                 logger.log('verbose', 'Job is launched');
                 job.start(function (error, users) {
                     if (error) {
