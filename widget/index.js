@@ -8,6 +8,18 @@
         logger     = require('./logger');
 
     Widget.hooks = {
+        actions: {
+            pluginDeactivate: function (pluginId) {
+                if (pluginId === require('../plugin.json').id) {
+                    controller.disposeJobs(function (error) {
+                        if (error) {
+                            return logger.log('error', '%s', error);
+                        }
+                        logger.log('verbose', 'Plugin deactivation: jobs are disposed');
+                    });
+                }
+            }
+        },
         filters: {
             clearRequireCache: function (data, callback) {
                 controller.disposeJobs(function (error) {

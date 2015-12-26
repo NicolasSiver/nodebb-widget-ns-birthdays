@@ -6,6 +6,10 @@
   "library": "./widget/index.js",
   "hooks": [
     {
+      "hook": "action:plugin.deactivate",
+      "method": "hooks.actions.pluginDeactivate"
+    },
+    {
       "hook": "static:app.load",
       "method": "hooks.statics.load"
     },
