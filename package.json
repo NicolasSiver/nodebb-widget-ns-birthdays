@@ -1,6 +1,6 @@
 {
   "name": "nodebb-widget-ns-birthdays",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Efficient widget to output all today's birthdays of community members.",
   "main": "./widget/index.js",
   "scripts": {
