@@ -46,6 +46,7 @@
         templates = {};
         templates[Templates.SETTINGS] = {uri: 'widgets/birthdays/settings.tpl', data: undefined};
         templates[Templates.VIEW] = {uri: 'widgets/birthdays/view.tpl', data: undefined};
+        templates[Templates.VIEW_MONTHLY] = {uri: 'widgets/birthdays/view_monthly.tpl', data: undefined};
 
         async.each(Object.keys(templates), function (name, next) {
             var template = templates[name];
@@ -62,7 +63,11 @@
     };
 
     Controller.renderWidget = function (widget, done) {
-        var showAge = widget.data.showAge;
+        var showAge = widget.data.showAge,
+            monthly = widget.data.monthly,
+            lang = widget.data.language,
+            tformat = widget.data.tformat || 'LL';
+        moment.locale(lang);
 
         async.waterfall([
             async.apply(job.getUsers),
@@ -77,21 +82,34 @@
                 }));
             },
             function findAge(users, next) {
-                if (!showAge) {
-                    next(null, {users: users});
-                } else {
-                    var today = new Date();
-                    next(null, {
-                        users: users.map(function (userData) {
-                            userData.age = moment(today).diff(new Date(userData.birthday), 'years');
-                            return userData;
-                        })
-                    });
-                }
+                var today = new Date();
+                next(null, {
+                    users: users.map(function (userData) {
+                        var bday = new Date(userData.birthday);
+                        userData.bstr = moment(bday).format(tformat);
+                        userData.today = false;
+                        if (today.getDate() === bday.getDate() && today.getMonth() === bday.getMonth()) {
+                            userData.today = true
+                        }
+                        if (showAge) {
+                            userData.age = moment(today).endOf('month').diff(bday, 'years');
+                        }
+                        return userData;
+                    })
+                });
             },
             function render(data, next) {
                 data.relative_path = nconf.get('relative_path');
-                next(null, templatesJs.parse(templates[Templates.VIEW].data, data));
+                if (monthly) {
+                    data.users.sort(function(a,b) {
+                      var x = a.birthday;
+                      var y = b.birthday;
+                      return x < y ? -1 : x > y ? 1 : 0;
+                    });
+                    next(null, {html: templatesJs.parse(templates[Templates.VIEW_MONTHLY].data, data)});
+                } else {
+                    next(null, templatesJs.parse(templates[Templates.VIEW].data, data));
+                }
             }
         ], done);
     };
