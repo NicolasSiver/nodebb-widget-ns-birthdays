@@ -82,21 +82,23 @@
                 }));
             },
             function findAge(users, next) {
-                var today = new Date();
-                next(null, {
-                    users: users.map(function (userData) {
-                        var bday = new Date(userData.birthday);
-                        userData.bstr = moment(bday).format(tformat);
-                        userData.today = false;
-                        if (today.getDate() === bday.getDate() && today.getMonth() === bday.getMonth()) {
-                            userData.today = true
-                        }
-                        if (showAge) {
-                            userData.age = moment(today).endOf('month').diff(bday, 'years');
-                        }
-                        return userData;
-                    })
+                var today = new Date(),
+                    data = [];
+                users.forEach(function(userData, index) {
+                    var bday = new Date(userData.birthday);
+                    userData.bstr = moment(bday).format(tformat);
+                    userData.today = false;
+                    if (today.getDate() === bday.getDate() && today.getMonth() === bday.getMonth()) {
+                        userData.today = true
+                    }
+                    if (showAge) {
+                        userData.age = moment(today).endOf('month').diff(bday, 'years');
+                    }
+                    if (monthly || userData.today) {
+                        data.push(userData);
+                    }
                 });
+                next(null, {users: data });
             },
             function render(data, next) {
                 data.relative_path = nconf.get('relative_path');
