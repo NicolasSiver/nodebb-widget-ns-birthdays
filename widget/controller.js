@@ -1,5 +1,8 @@
 (function (Controller) {
 
+    const meta = require.main.require('./src/meta');
+    const user = require.main.require('./src/user');
+
     var async   = require('async'),
         CronJob = require('cron').CronJob,
         fs      = require('fs'),
@@ -65,11 +68,18 @@
     Controller.renderWidget = function (widget, done) {
         var showAge = widget.data.showAge,
             monthly = widget.data.monthly,
-            lang = widget.data.language,
+            lang = lang = 'en-GB',
             tformat = widget.data.tformat || 'LL';
-        moment.locale(lang);
 
         async.waterfall([
+            function (next) {
+                user.getSettings(widget.uid, next);
+            },
+            function (settings, next) {
+                lang = settings.userLang || meta.config.defaultLang || lang;
+                moment.locale(lang);
+                next();
+            },
             async.apply(job.getUsers),
             function format(users, next) {
                 users = users || [];
