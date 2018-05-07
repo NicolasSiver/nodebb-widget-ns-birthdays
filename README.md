@@ -13,9 +13,9 @@ Efficient widget to output all today's birthdays of community members.
  
 
 - [Customization](#customization)
-- [Look](#look)
+- [Screenshots](#screenshots)
 - [How does it work?](#how-does-it-work)
-- [TODO](#todo)
+- [Future ideas for improvement](#future-ideas-for-improvement)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -29,7 +29,7 @@ You could change styles for these classes:
 
 If you want change icon style, refer to `.fa` class.
 
-## Look
+## Screenshots
 
 ![Widget Preview](screenshot.png)
 
@@ -44,7 +44,7 @@ Optimisations:
 - to store today's birthdays in memory
 - to check for birthdays only once per day
 
-## TODO
+## Future ideas for improvement
 
 - ACP: Provide setting to setup timezone
 - ACP: Provide setting to setup time to check for birthdays

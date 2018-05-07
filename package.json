@@ -1,6 +1,6 @@
 {
   "name": "nodebb-widget-ns-birthdays",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Efficient widget to output all today's birthdays of community members.",
   "main": "./widget/index.js",
   "scripts": {
@@ -24,12 +24,12 @@
   },
   "homepage": "https://github.com/NicolasSiver/nodebb-widget-ns-birthdays#readme",
   "dependencies": {
-    "async": "^1.5.0",
+    "async": "^2.6.0",
     "cron": "^1.1.0",
     "moment": "^2.10.6",
     "winston": "^2.1.1"
   },
   "nbbpm": {
-    "compatibility": "^0.9.0 || ^1.x"
+    "compatibility": "^1.7.0"
   }
 }

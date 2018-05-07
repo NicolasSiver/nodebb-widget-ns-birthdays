@@ -5,20 +5,18 @@
 
     var async   = require('async'),
         CronJob = require('cron').CronJob,
-        fs      = require('fs'),
-        moment  = require('moment'),
-        path    = require('path');
+        moment  = require('moment');
 
-    var job         = require('./job'),
-        logger      = require('./logger'),
-        nodebb      = require('./nodebb'),
-        nconf       = nodebb.nconf,
-        templatesJs = nodebb.templates,
-        Templates   = require('./templates');
+    var job    = require('./job'),
+        nodebb = require('./nodebb'),
+        nconf  = nodebb.nconf,
+        logger = require('./logger');
 
-    var app       = null,
-        cronJob   = null,
-        templates = null;
+    var app              = null,
+        cronJob          = null,
+        templateSettings = 'widgets/birthdays/settings',
+        templateWidget   = 'widgets/birthdays/view';
+        templateWidgetMo = 'widgets/birthdays/view_monthly';
 
     Controller.disposeJobs = function (done) {
         if (cronJob !== null) {
@@ -30,43 +28,24 @@
     };
 
     Controller.getWidgets = function (widgets, done) {
-        widgets.push({
-            name       : 'Birthdays',
-            widget     : 'ns_birthdays',
-            description: "Efficient widget to output all today's birthdays of community members.",
-            content    : templates[Templates.SETTINGS].data
-        });
-
-        done(null, widgets);
-    };
-
-    Controller.loadTemplates = function (done) {
-        if (templates !== null) {
-            logger.log('warn', 'Templates are already loaded');
-            return done(null);
-        }
-
-        templates = {};
-        templates[Templates.SETTINGS] = {uri: 'widgets/birthdays/settings.tpl', data: undefined};
-        templates[Templates.VIEW] = {uri: 'widgets/birthdays/view.tpl', data: undefined};
-        templates[Templates.VIEW_MONTHLY] = {uri: 'widgets/birthdays/view_monthly.tpl', data: undefined};
-
-        async.each(Object.keys(templates), function (name, next) {
-            var template = templates[name];
-            fs.readFile(path.resolve(__dirname, '../public/templates', template.uri), function (error, content) {
-                if (error) {
-                    logger.log('error', 'Template Error has occurred, message: %s', error.message);
-                    return next(error);
-                }
-                template.data = content.toString();
-                logger.log('verbose', 'Widget Template "%s" is loaded', name);
-                next(null);
-            });
-        }, done);
+        async.waterfall([
+            function (next) {
+                app.render(templateSettings, {}, next);
+            },
+            function (templateHtml, next) {
+                widgets.push({
+                    name       : 'Birthdays',
+                    widget     : 'ns_birthdays',
+                    description: "Efficient widget to output all today's birthdays of community members.",
+                    content    : templateHtml
+                });
+                next(null, widgets);
+            }
+        ], done);
     };
 
     Controller.renderWidget = function (widget, done) {
-        var showAge = widget.data.showAge,
+        var showAge = !!widget.data.showAge,
             monthly = widget.data.monthly,
             lang = lang = 'en-GB',
             tformat = widget.data.tformat || 'LL';
@@ -118,10 +97,14 @@
                       var y = b.birthday;
                       return x < y ? -1 : x > y ? 1 : 0;
                     });
-                    next(null, {html: templatesJs.parse(templates[Templates.VIEW_MONTHLY].data, data)});
+                    app.render(templateWidgetMo, data, next);
                 } else {
-                    next(null, templatesJs.parse(templates[Templates.VIEW].data, data));
+                    app.render(templateWidget, data, next);
                 }
+            },
+            function (templateHtml, next) {
+                widget.html = templateHtml;
+                next(null, widget);
             }
         ], done);
     };
