@@ -2,9 +2,10 @@
 
 Efficient widget to output all today's birthdays of community members.
 
+## Table of Contents
+
 ![Version](https://img.shields.io/npm/v/nodebb-widget-ns-birthdays.svg)
 ![Dependencies](https://david-dm.org/NicolasSiver/nodebb-widget-ns-birthdays.svg)
-![bitHound Score](https://www.bithound.io/github/NicolasSiver/nodebb-widget-ns-birthdays/badges/score.svg)
 ![Code Climate](https://img.shields.io/codeclimate/github/NicolasSiver/nodebb-widget-ns-birthdays.svg)
 ![Travis](https://travis-ci.org/NicolasSiver/nodebb-widget-ns-birthdays.svg?branch=master)
 
@@ -43,14 +44,3 @@ Optimisations:
 
 - to store today's birthdays in memory
 - to check for birthdays only once per day
-
-## Future ideas for improvement
-
-- ACP: Provide setting to setup timezone
-- ACP: Provide setting to setup time to check for birthdays
-- ACP: Ability to setup presentation
-- ACP: Limit number of birthdays
-- ACP: Default message when there are no birthdays
-- ACP: list birthdays as comma separated list
-- Calculate middle age
-- Update in real time
