@@ -47,8 +47,7 @@
                                     userEntity = usersList[i];
                                     if (userEntity.birthday) {
                                         birthday = new Date(userEntity.birthday);
-                                        if (today.getDate() === birthday.getDate()
-                                            && today.getMonth() === birthday.getMonth()) {
+                                        if (today.getMonth() === birthday.getMonth()) {
                                             birthdays.push(userEntity);
                                         }
                                     }

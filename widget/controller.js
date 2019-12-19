@@ -1,5 +1,8 @@
 (function (Controller) {
 
+    const meta = require.main.require('./src/meta');
+    const user = require.main.require('./src/user');
+
     var async   = require('async'),
         CronJob = require('cron').CronJob,
         moment  = require('moment');
@@ -13,6 +16,7 @@
         cronJob          = null,
         templateSettings = 'widgets/birthdays/settings',
         templateWidget   = 'widgets/birthdays/view';
+        templateWidgetMo = 'widgets/birthdays/view_monthly';
 
     Controller.disposeJobs = function (done) {
         if (cronJob !== null) {
@@ -41,9 +45,20 @@
     };
 
     Controller.renderWidget = function (widget, done) {
-        var showAge = !!widget.data.showAge;
+        var showAge = !!widget.data.showAge,
+            monthly = widget.data.monthly,
+            lang = lang = 'en-GB',
+            tformat = widget.data.tformat || 'LL';
 
         async.waterfall([
+            function (next) {
+                user.getSettings(widget.uid, next);
+            },
+            function (settings, next) {
+                lang = settings.userLang || meta.config.defaultLang || lang;
+                moment.locale(lang);
+                next();
+            },
             async.apply(job.getUsers),
             function format(users, next) {
                 users = users || [];
@@ -56,21 +71,36 @@
                 }));
             },
             function findAge(users, next) {
-                if (showAge === false) {
-                    next(null, {users: users});
-                } else {
-                    var today = new Date();
-                    next(null, {
-                        users: users.map(function (userData) {
-                            userData.age = moment(today).diff(new Date(userData.birthday), 'years');
-                            return userData;
-                        })
-                    });
-                }
+                var today = new Date(),
+                    data = [];
+                users.forEach(function(userData, index) {
+                    var bday = new Date(userData.birthday);
+                    userData.bstr = moment(bday).format(tformat);
+                    userData.today = false;
+                    if (today.getDate() === bday.getDate() && today.getMonth() === bday.getMonth()) {
+                        userData.today = true
+                    }
+                    if (showAge) {
+                        userData.age = moment(today).endOf('month').diff(bday, 'years');
+                    }
+                    if (monthly || userData.today) {
+                        data.push(userData);
+                    }
+                });
+                next(null, {users: data });
             },
             function render(data, next) {
                 data.relative_path = nconf.get('relative_path');
-                app.render(templateWidget, data, next);
+                if (monthly) {
+                    data.users.sort(function(a,b) {
+                      var x = a.birthday;
+                      var y = b.birthday;
+                      return x < y ? -1 : x > y ? 1 : 0;
+                    });
+                    app.render(templateWidgetMo, data, next);
+                } else {
+                    app.render(templateWidget, data, next);
+                }
             },
             function (templateHtml, next) {
                 widget.html = templateHtml;
