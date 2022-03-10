@@ -45,7 +45,7 @@
                                 var i = 0, len = usersList.length, userEntity, birthday;
                                 for (i; i < len; ++i) {
                                     userEntity = usersList[i];
-                                    if (userEntity.birthday) {
+                                    if (userEntity && userEntity.birthday) {
                                         birthday = new Date(userEntity.birthday);
                                         if (today.getDate() === birthday.getDate()
                                             && today.getMonth() === birthday.getMonth()) {
